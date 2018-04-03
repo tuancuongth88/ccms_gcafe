@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace CliendGcafe.model
+namespace CCMS.model
 {
     class User
     {
@@ -24,7 +20,12 @@ namespace CliendGcafe.model
         // so tien dang nhap theo phien
         public int total_money_login_session { get; set; }
         public string token { get; set; }
-
+        // mat khau khoa may
         public String pass_lock_computer { get; set; }
+
+        public String last_time_request { get; set; }
+
+        //id map voi userid 
+        public int conversation_id { get; set; }
     }
 }

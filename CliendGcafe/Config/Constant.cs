@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace CliendGcafe.Config
+namespace CCMS.Config
 {
     static class Constant
     {
@@ -18,6 +14,10 @@ namespace CliendGcafe.Config
         public static String methodSlide = System.Configuration.ConfigurationSettings.AppSettings["methodSlide"];
 
         public static string time_auto_call_serve = System.Configuration.ConfigurationSettings.AppSettings["time_auto_call_serve"];
-        public static string serverSoket = System.Configuration.ConfigurationSettings.AppSettings["ServerSoket"]; 
+        public static string serverSoket = System.Configuration.ConfigurationSettings.AppSettings["ServerSoket"];
+
+        //account admin
+        public static string username = System.Configuration.ConfigurationSettings.AppSettings["username"];
+        public static string password = System.Configuration.ConfigurationSettings.AppSettings["password"];
     }
 }

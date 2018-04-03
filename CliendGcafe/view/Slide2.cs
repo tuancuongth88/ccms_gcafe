@@ -1,6 +1,6 @@
-﻿using CliendGcafe.Config;
-using CliendGcafe.lib;
-using CliendGcafe.Properties;
+﻿using CCMS.Config;
+using CCMS.lib;
+//using CliendGcafe.Properties;
 using Microsoft.Win32;
 using Newtonsoft.Json.Linq;
 using Quobject.SocketIoClientDotNet.Client;
@@ -10,26 +10,28 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Windows.Forms;
-using CliendGcafe.model;
+using CCMS.model;
+using CCMS.Properties;
 
-namespace CliendGcafe.view
+namespace CCMS.view
 {
     public partial class Slide2 : FormView
     {
-        Thread t = null;
+        Thread t, t1 = null;
         RegistryKey rkApp = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
         private const int SW_HIDE = 0;
         private const int SW_SHOW = 1;
+        private String json;
         public Slide2()
         {
             InitializeComponent();
             // set ung dung chay cung win khi khoi dong
-            rkApp.SetValue("MyAppCliendGcafe", Application.ExecutablePath.ToString());
+            rkApp.SetValue("MyAppCCMS", Application.ExecutablePath.ToString());
 
             // set full nam hinh
-            //this.TopMost = true;
-            //this.FormBorderStyle = FormBorderStyle.None;
-            //this.WindowState = FormWindowState.Maximized;
+            this.TopMost = true;
+            this.FormBorderStyle = FormBorderStyle.None;
+            this.WindowState = FormWindowState.Maximized;
         }
         public void showImage(WebRequest request)
         {
@@ -51,10 +53,8 @@ namespace CliendGcafe.view
         {
             try
             {
-                string URI = host_connent + Constant.methodSlide;
-                using (WebClient wc = new WebClient())
+                if (!string.IsNullOrEmpty(this.json))
                 {
-                    var json = wc.DownloadString(URI);
                     dynamic data = JObject.Parse(json);
                     var listImg = (JArray)data.data;
                     var count = listImg.Count();
@@ -74,43 +74,124 @@ namespace CliendGcafe.view
                 slideImage();
             }
         }
+
         private void Slide2_Load(object sender, EventArgs e)
         {
-            string myHost = System.Net.Dns.GetHostName();
-            string myIP = null;
-
-            for (int i = 0; i <= System.Net.Dns.GetHostEntry(myHost).AddressList.Length - 1; i++)
+            try
             {
-                if (System.Net.Dns.GetHostEntry(myHost).AddressList[i].IsIPv6LinkLocal == false)
+                string myHost = System.Net.Dns.GetHostName();
+                string myIP = null;
+
+                IPAddress[] localIPs = Dns.GetHostAddresses(Dns.GetHostName());
+                foreach (IPAddress addr in localIPs)
                 {
-                    myIP = System.Net.Dns.GetHostEntry(myHost).AddressList[i].ToString();
-                    GlobalSystem.ipv4 = myIP;
+                    if (addr.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
+                    {
+                        myIP = addr.ToString();
+                    }
+                }
+                GlobalSystem.ipv4 = myIP;
+
+                string URI = this.host_connent + Constant.methodSlide;
+                using (WebClient wc = new WebClient())
+                {
+                    this.json = wc.DownloadString(URI);
+
+                }
+                if (GlobalSystem.islogin > 0)
+                {
+                    pictureBox1.Image = Resources._lock;
+                }
+                else
+                {
+                    if (this.isConnectHost == true)
+                    {
+                        t = new Thread(new ThreadStart(slideImage));
+                        t.Start();
+                        startServer();
+                    }
+                    else
+                    {
+                        pictureBox1.Image = Resources.background;
+                    }
+                }
+
+                //check shutdown
+                if (GlobalSystem.time_shutdown > 0)
+                {
+                    if (InvokeRequired)
+                    {
+                        this.Invoke(new MethodInvoker(delegate
+                        {
+                            Logger.LogThisLine("start thread shuwdown Invoke");
+                            t1 = new Thread(shutdown);
+                            t1.Start();
+                        }));
+                    }
+                    else
+                    {
+                        Logger.LogThisLine("start thread shuwdown");
+                        t1 = new Thread(shutdown);
+                        t1.Start();
+                    }
+
                 }
             }
-            if (this.isConnectHost == true)
+            catch(Exception ex)
             {
-                t = new Thread(new ThreadStart(slideImage));
-                t.Start();
-                startServer();
+                Logger.LogThisLine("Slide2_Load: " + ex.Message);
             }
-            else
-            {
-                pictureBox1.Image = Resources.background;
-            }
+            
 
         }
+        private void shutdown()
+        {
+            try
+            {
+                int sleep_time = GlobalSystem.time_shutdown * 1000;
+                Logger.LogThisLine("Time start shutdown: " + DateTime.Now);
+                DateTime endTime = DateTime.Now.AddSeconds(GlobalSystem.time_shutdown);
+                
+                if (t1.IsAlive == false)
+                {
+                    t1.Start();
+                }
+                Thread.Sleep(sleep_time);
+                if(GlobalSystem.islogin == 1)
+                {
+                    t1.Abort();
+                    return;
+                }
+                Logger.LogThisLine("Time end shutdown: " + DateTime.Now);
+                Logger.LogDebugFile("Shutdown may tinh: " + GlobalSystem.time_shutdown * 1000);
+                if(DateTime.Now >= endTime)
+                {
+                    Logger.LogThisLine("Shut down may tinh");
+                    System.Diagnostics.Process.Start("Shutdown", "/r /t 0");
+                    Environment.Exit(0);
+                }
+                else
+                {
+                    shutdown();
+                }
+            }catch(Exception ex)
+            {
+                Logger.LogThisLine("shutdown :" + ex.Message);
+            }
+            finally
+            {
+                //shutdown();
+            }
+        }
 
-        
         private void Slide2_KeyPress(object sender, KeyPressEventArgs e)
         {
-            Login frmlogin = new Login(t);
-            frmlogin.ShowDialog(this);
+            showFormLogin();
         }
 
         private void pictureBox1_Click(object sender, EventArgs e)
         {
-            Login frmlogin = new Login(t);
-            frmlogin.ShowDialog(this);
+            showFormLogin();
         }
 
         public void startServer()
@@ -126,9 +207,33 @@ namespace CliendGcafe.view
                     string json = data.ToString();
                     dynamic result = JObject.Parse(json);
                     string ip = result.ip;
+                    Logger.LogThisLine("Debug: "+ip +"---------------"+ GlobalSystem.ipv4);
+                    
                     if (ip == GlobalSystem.ipv4)
                     {
-                        processLoginHelper(result);                        
+                        bool checklogin =  processLoginHelper(json);
+                        Logger.LogThisLine("check login soket: " + checklogin);
+                        Logger.LogThisLine("chuỗi json trả về: " + json);
+                        if (checklogin)
+                        {
+                            JObject jout = JObject.FromObject(new { status = 1 });
+                            socket.Emit("refresh view", jout);
+                            if (InvokeRequired)
+                            {
+                                this.Invoke(new MethodInvoker(delegate {
+                                    Home frmHome = new Home(json);
+                                    this.Hide();
+                                    frmHome.ShowDialog(this);
+                                    this.Close();
+                                }));
+                                return;
+                            }
+                        }
+                        else
+                        {
+                            JObject jout = JObject.FromObject(new { status = 0});
+                            socket.Emit("refresh view", jout);
+                        }
                     }
                 });
             }
@@ -140,19 +245,26 @@ namespace CliendGcafe.view
             }
         }
 
-        public void processLoginHelper(dynamic data)
+        public bool processLoginHelper(String json)
         {
             try
             {
+                Logger.LogDebugFile("-----------Start Login tu xa-------------");
+                dynamic data = JObject.Parse(json);
                 if (GlobalSystem.islogin == 0)
                 {
+                    Logger.LogDebugFile("Thoi gian dang nhap: "+ DateTime.Now);
                     GlobalSystem.timeStart = DateTime.Now;
                 }
                 if (data.status == 200)
                 {
                     Helper.roleWindown(false);
-                    this.t.Abort();
+                    if (this.t.IsAlive == true)
+                        this.t.Abort();
+                    if(this.t1.IsAlive == true)
+                        this.t1.Abort();
                     GlobalSystem.isLogout = 0;
+                    GlobalSystem.islogin = 1;
                     User objUser = new User();
                     objUser.id = data.data.id;
                     objUser.username = data.data.username;
@@ -162,7 +274,9 @@ namespace CliendGcafe.view
                     objUser.total_monney = data.data.total_monney;
                     objUser.total_discount = data.data.total_discount;
                     objUser.token = data.data.token;
-
+                    Logger.LogThisLine("Login last_time_request: " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + " |Tong tien" + data.data.total_monney);
+                    objUser.last_time_request = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                    objUser.conversation_id = data.data.conversation_id;
                     if (data.data.group_user_info != null)
                     {
                         objUser.promotion_percent = data.data.group_user_info.promotion_percent;
@@ -185,42 +299,46 @@ namespace CliendGcafe.view
                     if (totalMonney <= 0)
                     {
                         Helper.showMessageError("Tài khoản bạn không đủ tiền!");
-                        return;
+                        return false;
                     }
                     GlobalSystem.user = objUser;
-                    if (InvokeRequired)
-                    {                        
-                        // after we've done all the processing, 
-                        this.Invoke(new MethodInvoker(delegate {
-                            Home frmHome = new Home();
-                            this.Hide();
-
-                            frmHome.ShowDialog(this);
-                            this.Close();
-                        }));
-                        return;
-                    }
-                   
+                    Helper.updateGlobalTimeGame(json);
+                    return true;                                      
 
                 }
                 else
                 {
                     String message = data.message;
                     Helper.showMessageError(message);
+                    Logger.LogThisLine(message);
                 }
+                Logger.LogDebugFile("-----------END Login tu xa-------------");
             }
             catch (Exception ex)
             {
                 Logger.LogThisLine(ex.Message);
-                MessageBox.Show("Xảy ra lỗi đăng nhập từ xa!");
-                return;
+                return false;
             }
+            return false;
         }
 
         private void Slide2_KeyDown(object sender, KeyEventArgs e)
         {
-            Login frmlogin = new Login(t);
-            frmlogin.ShowDialog(this);
+            showFormLogin();
+        }
+
+        private void showFormLogin()
+        {
+            if (GlobalSystem.islogin == 0)
+            {
+                Login frmlogin = new Login(t, t1);
+                frmlogin.ShowDialog(this);
+            }
+            else
+            {
+                UnlockComputer frmUnlockLock = new UnlockComputer(this.t);
+                frmUnlockLock.ShowDialog(this);
+            }
         }
       
 

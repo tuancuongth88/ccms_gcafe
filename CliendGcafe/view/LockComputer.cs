@@ -1,15 +1,9 @@
-﻿using CliendGcafe.Config;
+﻿using CCMS.Config;
+using CCMS.lib;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace CliendGcafe.view
+namespace CCMS.view
 {
     public partial class LockComputer : MetroFramework.Forms.MetroForm
     {
@@ -27,8 +21,8 @@ namespace CliendGcafe.view
         {
             try
             {
-                string pass = txtpass.ToString();
-                string passComfirm = txtComfirmPass.ToString();
+                string pass = txtpass.Text;
+                string passComfirm = txtComfirmPass.Text;
                 if (string.IsNullOrEmpty(pass) || string.IsNullOrEmpty(passComfirm))
                 {
                     MessageBox.Show("Phải nhập mật khẩu khóa máy");
@@ -39,11 +33,25 @@ namespace CliendGcafe.view
                     MessageBox.Show("Mật khẩu nhập lại không trùng với mật khẩu trên");
                     return;
                 }
+
                 GlobalSystem.user.pass_lock_computer = pass;
+                GlobalSystem.islogin = 1;
+                // an cac form truoc
+                for (int i = Application.OpenForms.Count - 1; i >= 0; i += -1)
+                {
+                    if (!object.ReferenceEquals(Application.OpenForms[i], this))
+                    {
+                        Application.OpenForms[i].Hide();
+                    }
+                }
+                this.Hide();
+                Slide2 frm = new Slide2();
+                frm.ShowDialog();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show("Lỗi hệ thống!");
+                Logger.LogThisLine("Lỗi hệ thống!: " + ex.Message);
                 this.Close();
             }
         }

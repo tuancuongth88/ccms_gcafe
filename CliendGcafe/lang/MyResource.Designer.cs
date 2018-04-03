@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CliendGcafe.lang {
+namespace CCMS.lang {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace CliendGcafe.lang {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("CliendGcafe.lang.MyResource", typeof(MyResource).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("CCMS.lang.MyResource", typeof(MyResource).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

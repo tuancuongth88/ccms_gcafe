@@ -1,4 +1,4 @@
-﻿namespace CliendGcafe.view
+﻿namespace CCMS.view
 {
     partial class Login
     {

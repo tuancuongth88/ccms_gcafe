@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <metadata name="groupBox1.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnhuy.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="btnhuy.Location" type="System.Drawing.Point, System.Drawing">
     <value>162, 92</value>
@@ -143,6 +149,9 @@
   <data name="&gt;&gt;btnhuy.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
+  <metadata name="btnlogin.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
   <data name="btnlogin.Location" type="System.Drawing.Point, System.Drawing">
     <value>81, 92</value>
   </data>
@@ -167,6 +176,9 @@
   <data name="&gt;&gt;btnlogin.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
+  <metadata name="txtPassword.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
   <data name="txtPassword.Location" type="System.Drawing.Point, System.Drawing">
     <value>81, 59</value>
   </data>
@@ -188,6 +200,9 @@
   <data name="&gt;&gt;txtPassword.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
+  <metadata name="txtUser.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
   <data name="txtUser.Location" type="System.Drawing.Point, System.Drawing">
     <value>82, 27</value>
   </data>
@@ -209,6 +224,9 @@
   <data name="&gt;&gt;txtUser.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
+  <metadata name="label2.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
   <data name="label2.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -236,6 +254,9 @@
   <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
+  <metadata name="label1.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
   <data name="label1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -290,6 +311,9 @@
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
+  <metadata name="$this.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
     <value>6, 13</value>
   </data>
@@ -310,6 +334,6 @@
     <value>Login</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>CliendGcafe.lib.FormView, CliendGcafe, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>CCMS.lib.FormView, CCMS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
 </root>

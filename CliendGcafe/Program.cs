@@ -1,11 +1,8 @@
-﻿using CliendGcafe.view;
+﻿using CCMS.view;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace CliendGcafe
+namespace CCMS
 {
     static class Program
     {

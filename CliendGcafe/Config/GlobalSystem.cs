@@ -1,15 +1,13 @@
-﻿using CliendGcafe.model;
+﻿using CCMS.model;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace CliendGcafe.Config
+namespace CCMS.Config
 {
     static class GlobalSystem
     {
         public static User user = null;
+
+        public static TimeGameUser timeGameUser = null;
 
         public static User userUpdate = null;
 
@@ -23,6 +21,11 @@ namespace CliendGcafe.Config
         public static string ipv4 = "";
 
         public static int sleep = 5000;
+
+        public static int time_shutdown = 0;
+
+        //1: admin 0:user
+        public static int is_admin = 0;
 
     }
 }

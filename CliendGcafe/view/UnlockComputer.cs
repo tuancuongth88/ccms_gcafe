@@ -1,5 +1,5 @@
-﻿using CliendGcafe.Config;
-using CliendGcafe.lib;
+﻿using CCMS.Config;
+using CCMS.lib;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,7 +11,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace CliendGcafe.view
+namespace CCMS.view
 {
     public partial class UnlockComputer : Form
     {
@@ -24,14 +24,14 @@ namespace CliendGcafe.view
 
         private void btnlogin_Click(object sender, EventArgs e)
         {
-            String pass = txtPassword.Text;
-            if(pass == GlobalSystem.user.pass_lock_computer)
+            String pass = txtpasswordLog.Text;
+            if(pass == GlobalSystem.user.password)
             {
-                t.Abort();
-                Home frmHome = new Home();
-                this.Hide();
-                frmHome.ShowDialog(this);
-                this.Close();
+                unLock();
+            }
+            else
+            {
+                Helper.showMessageError("Sai mật khẩu!");
             }
         }
         
@@ -40,5 +40,20 @@ namespace CliendGcafe.view
         {
             this.Close();
         }
+
+        private void unLock()
+        {
+            if(this.t != null)
+                this.t.Abort();
+            Home frmHome = new Home("");
+            this.Hide();
+            frmHome.ShowDialog(this);
+            this.Close();
+
+            Slide2 frm1 = new Slide2();
+            frm1.Close();
+        }
+
+        
     }
 }

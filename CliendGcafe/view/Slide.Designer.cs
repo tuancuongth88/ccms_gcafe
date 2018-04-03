@@ -1,4 +1,4 @@
-﻿namespace CliendGcafe
+﻿namespace CCMS
 {
     partial class Slide
     {

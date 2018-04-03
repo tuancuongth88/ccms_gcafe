@@ -1,4 +1,4 @@
-﻿namespace CliendGcafe.view
+﻿namespace CCMS.view
 {
     partial class LockComputer
     {
@@ -102,6 +102,7 @@
             // 
             // metroButton1
             // 
+            this.metroButton1.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.metroButton1.Location = new System.Drawing.Point(116, 87);
             this.metroButton1.Name = "metroButton1";
             this.metroButton1.Size = new System.Drawing.Size(73, 23);
@@ -121,9 +122,11 @@
             // 
             // LockComputer
             // 
+            this.AcceptButton = this.btnchangepass;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.CancelButton = this.metroButton1;
             this.ClientSize = new System.Drawing.Size(230, 157);
             this.Controls.Add(this.metroLabel1);
             this.Controls.Add(this.groupBox1);

@@ -1,5 +1,5 @@
-﻿using CliendGcafe.Config;
-using CliendGcafe.lib;
+﻿using CCMS.Config;
+using CCMS.lib;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,14 +10,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace CliendGcafe.view
+namespace CCMS.view
 {
     public partial class Service : Form
     {
-        string link = Constant.serverHost + Constant.methodService;
         public Service()
         {
             InitializeComponent();
+            this.MaximizedBounds = Screen.FromHandle(this.Handle).WorkingArea;
+            this.WindowState = FormWindowState.Maximized;
             webBrowser1.Url = new Uri(Constant.serverHost + Constant.methodService);
             webBrowser1.ScriptErrorsSuppressed = true;
         }

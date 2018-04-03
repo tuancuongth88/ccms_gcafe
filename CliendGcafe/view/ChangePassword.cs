@@ -1,10 +1,10 @@
-﻿using CliendGcafe.Config;
-using CliendGcafe.lib;
+﻿using CCMS.Config;
+using CCMS.lib;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Net;
 
-namespace CliendGcafe.view
+namespace CCMS.view
 {
     public partial class ChangePassword : MetroFramework.Forms.MetroForm
     {

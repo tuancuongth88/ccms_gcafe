@@ -1,4 +1,4 @@
-﻿namespace CliendGcafe.view
+﻿namespace CCMS.view
 {
     partial class alert
     {
@@ -47,11 +47,12 @@
             // 
             this.message.AutoSize = true;
             this.message.BackColor = System.Drawing.Color.Transparent;
-            this.message.Font = new System.Drawing.Font("Century Gothic", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.message.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.message.ForeColor = System.Drawing.Color.White;
-            this.message.Location = new System.Drawing.Point(78, 28);
+            this.message.Location = new System.Drawing.Point(51, 26);
+            this.message.MaximumSize = new System.Drawing.Size(260, 0);
             this.message.Name = "message";
-            this.message.Size = new System.Drawing.Size(140, 20);
+            this.message.Size = new System.Drawing.Size(115, 17);
             this.message.TabIndex = 3;
             this.message.Text = "Success message ";
             // 
@@ -59,9 +60,9 @@
             // 
             this.icon.BackColor = System.Drawing.Color.Transparent;
             this.icon.Image = ((System.Drawing.Image)(resources.GetObject("icon.Image")));
-            this.icon.Location = new System.Drawing.Point(22, 13);
+            this.icon.Location = new System.Drawing.Point(9, 19);
             this.icon.Name = "icon";
-            this.icon.Size = new System.Drawing.Size(46, 48);
+            this.icon.Size = new System.Drawing.Size(34, 33);
             this.icon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.icon.TabIndex = 2;
             this.icon.TabStop = false;
@@ -122,13 +123,14 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.SeaGreen;
-            this.ClientSize = new System.Drawing.Size(363, 89);
+            this.ClientSize = new System.Drawing.Size(363, 72);
             this.Controls.Add(this.bunifuImageButton1);
             this.Controls.Add(this.message);
             this.Controls.Add(this.icon);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "alert";
             this.Text = "alert";
+            this.TopMost = true;
             this.Load += new System.EventHandler(this.alert_Load);
             ((System.ComponentModel.ISupportInitialize)(this.icon)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bunifuImageButton1)).EndInit();

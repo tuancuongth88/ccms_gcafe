@@ -1,14 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace CliendGcafe.view
+namespace CCMS.view
 {
     public partial class alert : Form
     {
@@ -23,6 +17,7 @@ namespace CliendGcafe.view
                     icon.Image = imageList1.Images[0];
                     break;
                 case AlertType.info:
+
                     this.BackColor = Color.Gray;
                     icon.Image = imageList1.Images[1];
                     break;
@@ -45,7 +40,10 @@ namespace CliendGcafe.view
 
         public static void Show(string message, AlertType type)
         {
-            new CliendGcafe.view.alert(message, type).Show();
+            System.IO.Stream str = CCMS.Properties.Resources.notification;
+            System.Media.SoundPlayer snd = new System.Media.SoundPlayer(str);
+            snd.Play();
+            new CCMS.view.alert(message, type).Show();
         }
         private void alert_Load(object sender, EventArgs e)
         {

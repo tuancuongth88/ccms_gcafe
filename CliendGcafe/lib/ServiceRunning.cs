@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CliendGcafe.lib
+namespace CCMS.lib
 {
     class ServiceRunning
     {
