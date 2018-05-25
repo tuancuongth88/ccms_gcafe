@@ -107,9 +107,9 @@
             this.lbltimeuser.AutoSize = true;
             this.lbltimeuser.Location = new System.Drawing.Point(2, 85);
             this.lbltimeuser.Name = "lbltimeuser";
-            this.lbltimeuser.Size = new System.Drawing.Size(65, 19);
+            this.lbltimeuser.Size = new System.Drawing.Size(61, 19);
             this.lbltimeuser.TabIndex = 1;
-            this.lbltimeuser.Text = "Nhập lại :";
+            this.lbltimeuser.Text = "Nhập lại:";
             // 
             // lbltotaltime
             // 
@@ -118,7 +118,7 @@
             this.lbltotaltime.Name = "lbltotaltime";
             this.lbltotaltime.Size = new System.Drawing.Size(83, 19);
             this.lbltotaltime.TabIndex = 1;
-            this.lbltotaltime.Text = "Mặt khẩu cũ:";
+            this.lbltotaltime.Text = "Mật khẩu cũ:";
             // 
             // metroLabel1
             // 

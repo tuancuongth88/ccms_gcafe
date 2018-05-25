@@ -28,10 +28,12 @@ namespace CCMS.view
             this.jsonLogin = json;
             InitializeComponent();
             load();
+            Helper.blockWebsite();
         }
 
         public void load()
         {
+
             Rectangle workingArea = Screen.GetWorkingArea(this);
             this.Location = new Point(workingArea.Right - Size.Width, workingArea.Bottom - Size.Height);
             // an cac form truoc
@@ -59,6 +61,8 @@ namespace CCMS.view
                 startServer();
                 t = new Thread(processTimer);
                 t.Start();
+
+                
             }
             else
             {
@@ -233,8 +237,15 @@ namespace CCMS.view
                     return;
                 }
                 if (System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable()) {
-                    Helper.refreshMoney();
-                    calGameHouse();
+                    bool checkRefresh = Helper.refreshMoney();
+                    if(checkRefresh == true)
+                    {
+                        calGameHouse();
+                    }
+                    else
+                    {
+                        logout();
+                    }
                 }
                 else
                 {
@@ -332,7 +343,7 @@ namespace CCMS.view
             try
             {
                 socket = IO.Socket(Constant.serverSoket);
-                socket.On(Socket.EVENT_CONNECT, () =>
+                socket.On(Socket.EVENT_CONNECT, ()      =>
                 {
                     Logger.LogDebugFile("-------------EVEN SOKET EMIT ADD USER---------------");
                     Logger.LogDebugFile("add user rooms = clients userid =" + GlobalSystem.user.id);
@@ -353,7 +364,7 @@ namespace CCMS.view
                 });
 
                 // lăng nghe thông báo từ server trả về
-                socket.On("new message", (data) =>
+                socket.On("new message", (data)         =>
                 {
                     string json = data.ToString();
                     dynamic result = JObject.Parse(json);
@@ -416,18 +427,18 @@ namespace CCMS.view
                     Logger.LogDebugFile("-------------END NEW MESSAGE---------------");
                 });
                 // lắng nghe nạp tiền
-                socket.On("order card success", (data) =>
+                socket.On("order card success", (data)  =>
                 {
                     string json = data.ToString();
                     dynamic result = JObject.Parse(json);
                 });
 
-                socket.On("order success", (data) =>
+                socket.On("order success", (data)       =>
                 {
                     string json = data.ToString();
                     dynamic result = JObject.Parse(json);
                 });
-                socket.On("other helper", (data) =>
+                socket.On("other helper", (data)        =>
                 {
                     Logger.LogDebugFile("-------------START ORTHER HELPER---------------");
                     string json = data.ToString();
@@ -488,12 +499,12 @@ namespace CCMS.view
                     }
                     Logger.LogDebugFile("-------------END ORTHER HELPER---------------");
                 });
-                socket.On("minus money", (data) =>
+                socket.On("minus money", (data)         =>
                 {
                     string json = data.ToString();
                     dynamic result = JObject.Parse(json);
                 });
-                socket.On("end task", (data) =>
+                socket.On("end task", (data)            =>
                 {
                     string json = data.ToString();
                     dynamic result = JObject.Parse(json);
@@ -504,7 +515,7 @@ namespace CCMS.view
                         lstprocess[id_process].Kill();
                     }
                 });
-                socket.On("load client task", (data) =>
+                socket.On("load client task", (data)    =>
                 {
                     string ip = data.ToString();
 

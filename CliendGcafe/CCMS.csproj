@@ -139,6 +139,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>MyResource.resx</DependentUpon>
     </Compile>
+    <Compile Include="lib\DisableKey.cs" />
+    <Compile Include="lib\LockKey.cs" />
     <Compile Include="lib\Logger.cs" />
     <Compile Include="lib\ServiceRunning.cs" />
     <Compile Include="model\AutoClosingMessageBox.cs" />

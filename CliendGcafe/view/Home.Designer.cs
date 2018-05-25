@@ -250,6 +250,8 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "Home";
+            this.Resizable = false;
+            this.Style = MetroFramework.MetroColorStyle.Silver;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Home_FormClosing);
             this.Move += new System.EventHandler(this.Home_Move);
             this.groupBox1.ResumeLayout(false);

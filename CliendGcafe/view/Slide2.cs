@@ -27,76 +27,23 @@ namespace CCMS.view
             InitializeComponent();
             // set ung dung chay cung win khi khoi dong
             rkApp.SetValue("MyAppCCMS", Application.ExecutablePath.ToString());
-
             // set full nam hinh
             this.TopMost = true;
             this.FormBorderStyle = FormBorderStyle.None;
             this.WindowState = FormWindowState.Maximized;
-        }
-        public void showImage(WebRequest request)
-        {
-            try
-            {
-                using (var response = request.GetResponse())
-                using (var stream = response.GetResponseStream())
-                {
-                    pictureBox1.Image = Bitmap.FromStream(stream);
-                }
-            }
-            catch (Exception ex)
-            {
-                slideImage();
-            }
-        }
 
-        public void slideImage()
-        {
-            try
-            {
-                if (!string.IsNullOrEmpty(this.json))
-                {
-                    dynamic data = JObject.Parse(json);
-                    var listImg = (JArray)data.data;
-                    var count = listImg.Count();
-                    while (true)
-                    {
-                        Random random = new Random();
-                        int randomNumber = random.Next(0, count);
-                        string img_string = listImg[randomNumber].ToString();
-                        var request = WebRequest.Create(img_string);
-                        showImage(request);
-                        Thread.Sleep(GlobalSystem.sleep);
-                    }
-                }
-            }catch(Exception ex)
-            {
-                Thread.Sleep(GlobalSystem.sleep);
-                slideImage();
-            }
         }
-
         private void Slide2_Load(object sender, EventArgs e)
         {
             try
             {
-                string myHost = System.Net.Dns.GetHostName();
-                string myIP = null;
-
-                IPAddress[] localIPs = Dns.GetHostAddresses(Dns.GetHostName());
-                foreach (IPAddress addr in localIPs)
-                {
-                    if (addr.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
-                    {
-                        myIP = addr.ToString();
-                    }
-                }
-                GlobalSystem.ipv4 = myIP;
+                // set ip glocal
+                Helper.setIp4Global();
 
                 string URI = this.host_connent + Constant.methodSlide;
                 using (WebClient wc = new WebClient())
                 {
                     this.json = wc.DownloadString(URI);
-
                 }
                 if (GlobalSystem.islogin > 0)
                 {
@@ -106,7 +53,7 @@ namespace CCMS.view
                 {
                     if (this.isConnectHost == true)
                     {
-                        t = new Thread(new ThreadStart(slideImage));
+                        t = new Thread(slideImage);
                         t.Start();
                         startServer();
                     }
@@ -144,6 +91,52 @@ namespace CCMS.view
             
 
         }
+        public void showImage(WebRequest request)
+        {
+            try
+            {
+                using (var response = request.GetResponse())
+                using (var stream = response.GetResponseStream())
+                {
+                    pictureBox1.Image = Bitmap.FromStream(stream);
+                }
+            }
+            catch (Exception ex)
+            {
+                slideImage();
+            }
+        }
+
+        public void slideImage()
+        {
+            try
+            {
+                if(GlobalSystem.islogin == 1)
+                {
+                    t.Abort();
+                }
+                if (!string.IsNullOrEmpty(this.json))
+                {
+                    dynamic data = JObject.Parse(json);
+                    var listImg = (JArray)data.data;
+                    var count = listImg.Count();
+                    while (true)
+                    {
+                        Random random = new Random();
+                        int randomNumber = random.Next(0, count);
+                        string img_string = listImg[randomNumber].ToString();
+                        var request = WebRequest.Create(img_string);
+                        showImage(request);
+                        Thread.Sleep(GlobalSystem.sleep);
+                    }
+                }
+            }catch(Exception ex)
+            {
+                Thread.Sleep(GlobalSystem.sleep);
+                slideImage();
+            }
+        }
+
         private void shutdown()
         {
             try
@@ -258,7 +251,8 @@ namespace CCMS.view
                 }
                 if (data.status == 200)
                 {
-                    Helper.roleWindown(false);
+                    Helper.roleWindown(false);                    
+
                     if (this.t.IsAlive == true)
                         this.t.Abort();
                     if(this.t1.IsAlive == true)
@@ -268,6 +262,7 @@ namespace CCMS.view
                     User objUser = new User();
                     objUser.id = data.data.id;
                     objUser.username = data.data.username;
+                    objUser.password = data.password;
                     objUser.name = data.data.name;
                     objUser.email = data.data.email;
                     objUser.type = data.data.type;

@@ -74,7 +74,8 @@ namespace CCMS.view
                     dynamic data = JObject.Parse(HtmlResult);
                     if (data.status == 200)
                     {
-                        //Helper.roleWindown(false);
+                        Helper.roleWindown(false);                        
+
                         closeThread();
                         GlobalSystem.islogin = 1;
                         GlobalSystem.isLogout = 0;

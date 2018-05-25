@@ -12,6 +12,7 @@ namespace CCMS.Config
         public static String methodChangePass = System.Configuration.ConfigurationSettings.AppSettings["methodChangePass"]; 
         public static String methodProfile = System.Configuration.ConfigurationSettings.AppSettings["methodProfile"];
         public static String methodSlide = System.Configuration.ConfigurationSettings.AppSettings["methodSlide"];
+        public static String methodBlacklist = System.Configuration.ConfigurationSettings.AppSettings["methodBlacklist"];
 
         public static string time_auto_call_serve = System.Configuration.ConfigurationSettings.AppSettings["time_auto_call_serve"];
         public static string serverSoket = System.Configuration.ConfigurationSettings.AppSettings["ServerSoket"];

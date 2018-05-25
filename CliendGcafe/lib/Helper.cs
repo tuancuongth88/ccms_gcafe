@@ -17,6 +17,8 @@ using System.IO;
 using Quobject.SocketIoClientDotNet.Client;
 using System.Text.RegularExpressions;
 using System.Reflection;
+using CCMS.view;
+using System.Threading;
 
 namespace CCMS.lib
 {
@@ -69,7 +71,7 @@ namespace CCMS.lib
             }
         }
 
-        public static void refreshMoney()
+        public static bool refreshMoney()
         {
             String HtmlResult = "";
             try
@@ -106,6 +108,11 @@ namespace CCMS.lib
                             //update glocal time game
                             updateGlobalTimeGame(HtmlResult);
                             Logger.LogDebugFile("last_time_request: " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + " | Tong tien: " + GlobalSystem.timeGameUser.total_monney);
+                            return true;
+                        }
+                        else
+                        {                           
+                            return false;
                         }
                     }
                 }
@@ -118,8 +125,10 @@ namespace CCMS.lib
                 Logger.LogThisLine("Lỗi Json: "+ HtmlResult);
                 Logger.LogThisLine("refreshMoney "+ e.Message);
                 MessageBox.Show("Tạm thời mất kết nối đến Server, nhấn Ok để tiếp tục!", "Mất kết nối server", MessageBoxButtons.OK);
+                return false;
 
             }
+            return false;
         }
 
         public static void updateGlobalTimeGame(string json)
@@ -373,6 +382,65 @@ namespace CCMS.lib
         public static string StripTagsRegex(string source)
         {
             return Regex.Replace(source, "<.*?>", string.Empty);
+        }
+
+        public static void blockWebsite()
+        {
+            try
+            {
+                Logger.LogDebugFile("---- Chan web site ----");
+                string URI = Constant.serverHost + Constant.methodBlacklist;
+                using (WebClient wc = new WebClient())
+                {
+                    wc.Headers[HttpRequestHeader.ContentType] = "application/x-www-form-urlencoded";
+                    wc.Headers.Add("token", GlobalSystem.user.token);
+                    string json = wc.DownloadString(URI);
+
+                    dynamic data = JObject.Parse(json);
+                    var listWeb = data.data;
+                    String path = @"C:\Windows\System32\drivers\etc\hosts";
+                    string[] lines = File.ReadAllLines(path);
+                    for (int i = 0; i < lines.Length; i++)
+                    {
+                        if (lines[i] == "")
+                            continue;
+                        if (lines[i].Contains("#block_Icafe"))
+                        {
+                            lines[i] = "";
+                        }
+                    }
+                    File.WriteAllLines(path, lines);
+                    StreamWriter sw = new StreamWriter(path, true);
+                    foreach (var item in listWeb)
+                    {
+                        String website = item.website;
+                        String description = item.description;
+                        String sitetoblock = "\n 127.0.0.1 " + website + " #block_Icafe";
+                        sw.Write(sitetoblock);
+                    }
+                    sw.Close();
+                }
+                Logger.LogDebugFile("---- END chan web site ----");
+            }
+            catch(Exception ex)
+            {
+                Logger.LogThisLine("blockWebsite: " + ex.Message);
+            }
+            
+        }
+
+        public static void setIp4Global()
+        {
+            string myIP = null;
+            IPAddress[] localIPs = Dns.GetHostAddresses(Dns.GetHostName());
+            foreach (IPAddress addr in localIPs)
+            {
+                if (addr.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
+                {
+                    myIP = addr.ToString();
+                }
+            }
+            GlobalSystem.ipv4 = myIP;
         }
     }
 }

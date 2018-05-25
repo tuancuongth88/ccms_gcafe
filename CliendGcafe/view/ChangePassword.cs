@@ -54,7 +54,7 @@ namespace CCMS.view
                             dynamic data = JObject.Parse(HtmlResult);
                             if (data.status == 200)
                             {
-                                GlobalSystem.user.password = txtNewpass.ToString();
+                                //GlobalSystem.user.password = txtNewpass.Text.ToString();
                                 Helper.showMessageError("Đổi mật khẩu thành công");
                                 this.Close();
                                 return;
