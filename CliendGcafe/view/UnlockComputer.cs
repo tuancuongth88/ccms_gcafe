@@ -25,7 +25,7 @@ namespace CCMS.view
         private void btnlogin_Click(object sender, EventArgs e)
         {
             String pass = txtpasswordLog.Text;
-            if(pass == GlobalSystem.user.password)
+            if(pass == GlobalSystem.user.pass_lock_computer)
             {
                 unLock();
             }

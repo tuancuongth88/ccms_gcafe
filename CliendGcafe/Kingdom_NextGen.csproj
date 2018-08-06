@@ -8,7 +8,7 @@
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>CCMS</RootNamespace>
-    <AssemblyName>CCMS</AssemblyName>
+    <AssemblyName>Kingdom_NextGen</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -74,11 +74,11 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Resources\Dtafalonso-Android-Lollipop-Play-Games.ico</ApplicationIcon>
+    <ApplicationIcon>logo.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Bunifu_UI_v1.52">
-      <HintPath>..\..\..\..\..\Desktop\test\Bunifu_UI_v1.52.dll</HintPath>
+      <HintPath>..\..\..\..\..\Desktop\Bunifu_UI_v1.52.dll</HintPath>
     </Reference>
     <Reference Include="EngineIoClientDotNet, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\EngineIoClientDotNet.1.0.5\lib\net45\EngineIoClientDotNet.dll</HintPath>
@@ -86,7 +86,7 @@
     </Reference>
     <Reference Include="MetroFramework, Version=1.2.0.3, Culture=neutral, PublicKeyToken=5f91a84759bf584a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\MetroFramework.dll</HintPath>
+      <HintPath>..\packages\MetroFramework.RunTime.1.2.0.3\lib\net40-Client\MetroFramework.dll</HintPath>
     </Reference>
     <Reference Include="MetroFramework.Design, Version=1.2.0.3, Culture=neutral, PublicKeyToken=5f91a84759bf584a, processorArchitecture=MSIL">
       <HintPath>..\packages\MetroFramework.Design.1.2.0.3\lib\net40\MetroFramework.Design.dll</HintPath>
@@ -132,6 +132,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Config\ClientPartner.cs" />
     <Compile Include="Config\Constant.cs" />
     <Compile Include="Config\GlobalSystem.cs" />
     <Compile Include="lang\MyResource.Designer.cs">
@@ -140,9 +141,14 @@
       <DependentUpon>MyResource.resx</DependentUpon>
     </Compile>
     <Compile Include="lib\DisableKey.cs" />
-    <Compile Include="lib\LockKey.cs" />
     <Compile Include="lib\Logger.cs" />
     <Compile Include="lib\ServiceRunning.cs" />
+    <Compile Include="lib\ShowProcessLoad.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="lib\ShowProcessLoad.Designer.cs">
+      <DependentUpon>ShowProcessLoad.cs</DependentUpon>
+    </Compile>
     <Compile Include="model\AutoClosingMessageBox.cs" />
     <Compile Include="model\SlideProcess.cs" />
     <Compile Include="model\ThreadManager.cs" />
@@ -223,6 +229,9 @@
       <LastGenOutput>MyResource.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="lang\MyResource.vi-VN.resx" />
+    <EmbeddedResource Include="lib\ShowProcessLoad.resx">
+      <DependentUpon>ShowProcessLoad.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="view\alert.resx">
       <DependentUpon>alert.cs</DependentUpon>
     </EmbeddedResource>
@@ -298,12 +307,15 @@
     <None Include="Resources\danger-30964_640.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\ok.png" />
     <None Include="Resources\log_computer_lock.png" />
     <None Include="Resources\s_lock.png" />
     <None Include="Resources\log_lock.png" />
     <None Include="Resources\lock.jpg" />
     <None Include="mp3\notification.wav" />
     <None Include="Resources\change_pas_lock.png" />
+    <None Include="Resources\backgrount1.jpg" />
+    <Content Include="logo.ico" />
     <Content Include="Resources\Dtafalonso-Android-Lollipop-Play-Games.ico" />
     <Content Include="Resources\background.jpg" />
   </ItemGroup>

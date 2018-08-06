@@ -1,4 +1,5 @@
-﻿using CCMS.view;
+﻿using CCMS.lib;
+using CCMS.view;
 using System;
 using System.Windows.Forms;
 
@@ -14,6 +15,7 @@ namespace CCMS
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            //Application.Run(new Slide2());
             Application.Run(new Slide2());
         }
     }

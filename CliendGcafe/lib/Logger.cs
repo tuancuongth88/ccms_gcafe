@@ -1,7 +1,10 @@
-﻿using System;
+﻿using CCMS.Config;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -38,13 +41,33 @@ namespace CCMS.lib
         }
         public static void LogDebugFile(String log)
         {
-            Logger.swLogDebug.WriteLine(DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToLongTimeString() + "\t:" + "\t" + log);
-            Logger.swLogDebug.Flush();
+            try
+            {
+                Logger.swLogDebug.WriteLine(DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToLongTimeString() + "\t:" + "\t" + log);
+                Logger.swLogDebug.Flush();
+                //writeLogServer("info", log);
+            }
+            catch(Exception ex)
+            {
+                CloseLogger();
+                return;
+            }
+            
         }
         public static void LogThisLine(string sLogLine)
         {
-            Logger.swLog.WriteLine(DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToLongTimeString() + "\t:" + "\t" + sLogLine);
-            Logger.swLog.Flush();
+            try
+            {
+                Logger.swLog.WriteLine(DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToLongTimeString() + "\t:" + "\t" + sLogLine);
+                Logger.swLog.Flush();
+                //writeLogServer("errors", sLogLine);
+            }
+            catch(Exception ex)
+            {
+                CloseLogger();
+                return;
+            }
+            
         }
 
         public static void CloseLogger()
@@ -54,6 +77,31 @@ namespace CCMS.lib
 
             Logger.swLogDebug.Flush();
             Logger.swLogDebug.Close();
+        }
+
+        private static void writeLogServer(string type, String log)
+        {
+            try
+            {
+                if (GlobalSystem.islogin == 0)
+                {
+                    GlobalSystem.timeStart = DateTime.Now;
+                }
+
+                string myParameters = "type_log=" + type + "&log_content=" + log;
+
+                string URI = Constant.serverHost + Constant.methodLogin;
+                using (WebClient wc = new WebClient())
+                {
+                    wc.Headers[HttpRequestHeader.ContentType] = "application/x-www-form-urlencoded";
+                    string HtmlResult = wc.UploadString(URI, myParameters);
+                    Logger.LogDebugFile("Login json tra ve: " + HtmlResult);
+                    dynamic data = JObject.Parse(HtmlResult);
+                }
+                    
+            }catch (Exception ex){
+                Logger.LogThisLine("writeLogServer: " + ex.Message);
+            }
         }
     }
 }

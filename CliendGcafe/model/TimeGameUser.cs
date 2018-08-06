@@ -21,5 +21,8 @@ namespace CCMS.model
 
         public int iscombo { get; set; }
 
+        //thời gian còn lại bằng millisecond
+        public string time_expired_millisecond { get; set; }
+
     }
 }

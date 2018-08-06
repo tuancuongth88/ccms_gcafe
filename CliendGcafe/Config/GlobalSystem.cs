@@ -27,5 +27,10 @@ namespace CCMS.Config
         //1: admin 0:user
         public static int is_admin = 0;
 
+        //count mat ket noi 3 lan thi cho out luon
+        public static int count_disconnect = 0;
+
+        
+
     }
 }

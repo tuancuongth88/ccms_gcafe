@@ -17,7 +17,6 @@ namespace CCMS.view
                     icon.Image = imageList1.Images[0];
                     break;
                 case AlertType.info:
-
                     this.BackColor = Color.Gray;
                     icon.Image = imageList1.Images[1];
                     break;
@@ -38,11 +37,14 @@ namespace CCMS.view
             success, info, warnig, error
         }
 
-        public static void Show(string message, AlertType type)
+        public static void Show(string message, AlertType type, bool off_soud = true)
         {
-            System.IO.Stream str = CCMS.Properties.Resources.notification;
-            System.Media.SoundPlayer snd = new System.Media.SoundPlayer(str);
-            snd.Play();
+            if(off_soud == true)
+            {
+                System.IO.Stream str = CCMS.Properties.Resources.notification;
+                System.Media.SoundPlayer snd = new System.Media.SoundPlayer(str);
+                snd.Play();
+            }
             new CCMS.view.alert(message, type).Show();
         }
         private void alert_Load(object sender, EventArgs e)

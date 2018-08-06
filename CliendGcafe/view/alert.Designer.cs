@@ -31,7 +31,6 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(alert));
             this.message = new System.Windows.Forms.Label();
-            this.icon = new System.Windows.Forms.PictureBox();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.timeout = new System.Windows.Forms.Timer(this.components);
             this.show = new System.Windows.Forms.Timer(this.components);
@@ -39,8 +38,9 @@
             this.bunifuElipse1 = new Bunifu.Framework.UI.BunifuElipse(this.components);
             this.bunifuDragControl1 = new Bunifu.Framework.UI.BunifuDragControl(this.components);
             this.bunifuImageButton1 = new Bunifu.Framework.UI.BunifuImageButton();
-            ((System.ComponentModel.ISupportInitialize)(this.icon)).BeginInit();
+            this.icon = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.bunifuImageButton1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.icon)).BeginInit();
             this.SuspendLayout();
             // 
             // message
@@ -56,25 +56,18 @@
             this.message.TabIndex = 3;
             this.message.Text = "Success message ";
             // 
-            // icon
-            // 
-            this.icon.BackColor = System.Drawing.Color.Transparent;
-            this.icon.Image = ((System.Drawing.Image)(resources.GetObject("icon.Image")));
-            this.icon.Location = new System.Drawing.Point(9, 19);
-            this.icon.Name = "icon";
-            this.icon.Size = new System.Drawing.Size(34, 33);
-            this.icon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.icon.TabIndex = 2;
-            this.icon.TabStop = false;
-            // 
             // imageList1
             // 
             this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
             this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageList1.Images.SetKeyName(0, "ok-icon.png");
-            this.imageList1.Images.SetKeyName(1, "info-o-light.png");
+            this.imageList1.Images.SetKeyName(0, "1.png");
+            this.imageList1.Images.SetKeyName(1, "Msg.png");
             this.imageList1.Images.SetKeyName(2, "warning.png");
-            this.imageList1.Images.SetKeyName(3, "error.png");
+            this.imageList1.Images.SetKeyName(3, "2.png");
+            this.imageList1.Images.SetKeyName(4, "Cancel.png");
+            this.imageList1.Images.SetKeyName(5, "Ok.png");
+            this.imageList1.Images.SetKeyName(6, "3.png");
+            this.imageList1.Images.SetKeyName(7, "error.png");
             // 
             // timeout
             // 
@@ -118,6 +111,17 @@
             this.bunifuImageButton1.Zoom = 10;
             this.bunifuImageButton1.Click += new System.EventHandler(this.bunifuImageButton1_Click);
             // 
+            // icon
+            // 
+            this.icon.BackColor = System.Drawing.Color.Transparent;
+            this.icon.Image = ((System.Drawing.Image)(resources.GetObject("icon.Image")));
+            this.icon.Location = new System.Drawing.Point(9, 19);
+            this.icon.Name = "icon";
+            this.icon.Size = new System.Drawing.Size(34, 33);
+            this.icon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.icon.TabIndex = 2;
+            this.icon.TabStop = false;
+            // 
             // alert
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -132,8 +136,8 @@
             this.Text = "alert";
             this.TopMost = true;
             this.Load += new System.EventHandler(this.alert_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.icon)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bunifuImageButton1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.icon)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

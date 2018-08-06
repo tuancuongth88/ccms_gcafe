@@ -29,15 +29,30 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Login));
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.btnhuy = new System.Windows.Forms.Button();
             this.btnlogin = new System.Windows.Forms.Button();
+            this.btnhuy = new System.Windows.Forms.Button();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.txtPassword = new System.Windows.Forms.TextBox();
             this.txtUser = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
+            // 
+            // btnlogin
+            // 
+            resources.ApplyResources(this.btnlogin, "btnlogin");
+            this.btnlogin.Name = "btnlogin";
+            this.btnlogin.UseVisualStyleBackColor = true;
+            this.btnlogin.Click += new System.EventHandler(this.btnlogin_Click);
+            // 
+            // btnhuy
+            // 
+            this.btnhuy.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            resources.ApplyResources(this.btnhuy, "btnhuy");
+            this.btnhuy.Name = "btnhuy";
+            this.btnhuy.UseVisualStyleBackColor = true;
+            this.btnhuy.Click += new System.EventHandler(this.btnhuy_Click);
             // 
             // groupBox1
             // 
@@ -50,21 +65,7 @@
             resources.ApplyResources(this.groupBox1, "groupBox1");
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.TabStop = false;
-            // 
-            // btnhuy
-            // 
-            this.btnhuy.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            resources.ApplyResources(this.btnhuy, "btnhuy");
-            this.btnhuy.Name = "btnhuy";
-            this.btnhuy.UseVisualStyleBackColor = true;
-            this.btnhuy.Click += new System.EventHandler(this.btnhuy_Click);
-            // 
-            // btnlogin
-            // 
-            resources.ApplyResources(this.btnlogin, "btnlogin");
-            this.btnlogin.Name = "btnlogin";
-            this.btnlogin.UseVisualStyleBackColor = true;
-            this.btnlogin.Click += new System.EventHandler(this.btnlogin_Click);
+            this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
             // 
             // txtPassword
             // 
@@ -99,6 +100,7 @@
             this.MinimizeBox = false;
             this.Name = "Login";
             this.ShowInTaskbar = false;
+            this.Load += new System.EventHandler(this.Login_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);

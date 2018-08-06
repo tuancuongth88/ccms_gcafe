@@ -16,9 +16,9 @@ namespace CCMS.lib
         public bool isConnectHost = false;
         public FormView()
         {
-            this.host_connent = Constant.serverHost;
-            this.methodLogin = Constant.methodLogin;
-            this.isConnectHost = checkConnectServer();
+            //this.host_connent = Constant.serverHost;
+            //this.methodLogin = Constant.methodLogin;
+            //this.isConnectHost = checkConnectServer();
         }
         public bool checkConnectServer()
         {
