@@ -9,6 +9,7 @@ using System.Globalization;
 using System.Net;
 using System.Resources;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace CCMS.view
@@ -23,13 +24,16 @@ namespace CCMS.view
         {
             
             InitializeComponent();
+
             setLanguage();
         }
 
         private void Login_Load(object sender, EventArgs e)
         {
-           // showQRCodeLogin();
+            // showQRCodeLogin();
             //startServer();
+            pnlogin.Visible = true;
+            pnloading.Visible = false;
         }
 
         private void btnlogin_Click(object sender, EventArgs e)
@@ -40,6 +44,7 @@ namespace CCMS.view
                 User.updateStatusLoginAdmin(1);
                 closeThread();
                 GlobalSystem.is_admin = 1;
+                GlobalSystem.islogin = 1;
                 Helper.roleWindown(true);
                 Home frmHome = new Home("");
                 this.Hide();
@@ -174,23 +179,22 @@ namespace CCMS.view
                         Helper.updateGlobalTimeGame(HtmlResult);
                         Logger.LogDebugFile("End set updateGlobalTimeGame");
                         GlobalSystem.user = objUser;
-                        Home frmHome = new Home(HtmlResult);
-                        this.Hide();
-                        frmHome.ShowDialog(this);
-                        this.Close();
-
-                        Slide2 frm1 = new Slide2();
-                        frm1.Close();
+                        //go to home
+                        goToHome(HtmlResult);
                     }
                     else if(data.status == 401)
                     {
                         //check xem co may nao da login tren tai khoan nay chua
-                            String ip = data.data[0].ip.ToString();
-                            String _username = data.data[0].username.ToString();
-                            Helper.logoutCliendWithAccount(ip, "1", _username);
-                            ShowProcessLoad frmAlert = new ShowProcessLoad("Tài khoản bạn đang đăng nhập nơi khác, vui lòng đăng nhập lại sau vài giây nữa!");
-                            frmAlert.ShowDialog(this);
-                            return;
+                        String ip = data.data[0].ip.ToString();
+                        String _username = data.data[0].username.ToString();
+                        Helper.logoutCliendWithAccount(ip, "1", _username);
+                        //ShowProcessLoad frmAlert = new ShowProcessLoad("Tài khoản bạn đang đăng nhập nơi khác, vui lòng đăng nhập lại sau vài giây nữa!");
+                        //frmAlert.ShowDialog(this);
+                        pnlogin.Visible = false;
+                        pnloading.Visible = true;
+                        loadingProgressBar();
+
+                        return;
                     }
                     else
                     {
@@ -226,6 +230,42 @@ namespace CCMS.view
                     Helper.showMessageError("processLogin: " + ex.Message);
                 }
             }
+        }
+
+        private async void loadingProgressBar()
+        {
+            try
+            {
+                loading1.Value = 0;
+                for (int i = 1; i <= 100; i++)
+                {
+                    loading1.Value = i;
+                    loading1.Text = i.ToString();
+                    loading1.Update();
+                    await Task.Delay(100);
+                }
+                pnloading.Visible = false;
+                pnlogin.Visible = true;
+            }
+            catch(Exception ex)
+            {
+                Logger.LogThisLine("loadingProgressBar" + ex.ToString());
+            }
+        }
+
+        public void goToHome(String json)
+        {
+            if(GlobalSystem.socket != null)
+            {
+                GlobalSystem.socket.Disconnect();
+                GlobalSystem.socket.Close();
+            }
+            Home frmHome = new Home(json);
+            this.Hide();
+            frmHome.ShowDialog(this);
+            this.Close();
+            Slide2 frm1 = new Slide2();
+            frm1.Close();
         }
 
         public void closeThread()

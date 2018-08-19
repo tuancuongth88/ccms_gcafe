@@ -1,5 +1,6 @@
 ﻿using CCMS.model;
 using System;
+using Quobject.SocketIoClientDotNet.Client;
 
 namespace CCMS.Config
 {
@@ -29,6 +30,8 @@ namespace CCMS.Config
 
         //count mat ket noi 3 lan thi cho out luon
         public static int count_disconnect = 0;
+
+        public static Socket socket;
 
         
 

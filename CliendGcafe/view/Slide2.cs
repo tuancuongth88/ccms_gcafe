@@ -24,7 +24,6 @@ namespace CCMS.view
         private int countShowformHome = 0;
         Thread t, t1 = null;
         RegistryKey rkApp = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
-        private Socket socket;
         //private DisableKey lockey = new DisableKey();
         public Slide2()
         {
@@ -66,7 +65,8 @@ namespace CCMS.view
                         //ket noi den soket server
                         startServer();
                     }
-                }                
+                }
+                
 
                 //check shutdown
                 if (GlobalSystem.time_shutdown > 0)
@@ -204,14 +204,15 @@ namespace CCMS.view
         {
             try
             {
+                
                 var OPT = new Quobject.SocketIoClientDotNet.Client.IO.Options();
                 OPT.ForceNew = true;
                 OPT.Timeout = 3000;
-                socket = IO.Socket(Constant.serverSoket, OPT);
-                //socket.On(Socket.EVENT_CONNECT, () =>
-                //{
-                //});           
-                socket.On("login helper", (data) =>
+                GlobalSystem.socket = IO.Socket(Constant.serverSoket, OPT);
+                GlobalSystem.socket.On(Socket.EVENT_CONNECT, () =>
+                {
+                });
+                GlobalSystem.socket.On("login helper", (data) =>
                 {
                     string json = data.ToString();
                     dynamic result = JObject.Parse(json);
@@ -221,56 +222,54 @@ namespace CCMS.view
                     if (ip == GlobalSystem.ipv4)
                     {
                         countShowformHome++;
-                        Logger.LogDebugFile("-------------------login helper-----------------");
-                        Logger.LogDebugFile("chuỗi json trả về: " + json);
-                        bool checklogin =  processLoginHelper(json);
-                        Logger.LogDebugFile("check login soket: " + checklogin);                        
-                        if (checklogin)
+                        if (countShowformHome == 1)
                         {
-                           
-                            if (InvokeRequired)
+                            Logger.LogDebugFile("-------------------login helper-----------------");
+                            Logger.LogDebugFile("chuỗi json trả về: " + json);
+                            bool checklogin = processLoginHelper(json);
+                            Logger.LogDebugFile("check login soket: " + checklogin);
+                            if (checklogin)
                             {
-                                this.Invoke(new MethodInvoker(delegate {
-                                    
-                                    if(countShowformHome == 1)
+                                if (InvokeRequired)
+                                {
+                                    this.Invoke(new MethodInvoker(delegate
                                     {
                                         Logger.LogDebugFile("Đếm số lần soket bán lên: " + countShowformHome);
                                         JObject jout = JObject.FromObject(new { status = 1 });
-                                        socket.Emit("refresh view", jout);
+                                        GlobalSystem.socket.Emit("refresh view", jout);
                                         goToHome(json);
-                                    }
-                                    
-                                }));
-                                return;
+                                    }));
+                                    return;
+                                }
                             }
+                            else
+                            {
+                                JObject jout = JObject.FromObject(new { status = 0, });
+                                GlobalSystem.socket.Emit("refresh view", jout);
+                            }
+                            Logger.LogDebugFile("-------------------End login helper-----------------");
                         }
-                        else
-                        {
-                            JObject jout = JObject.FromObject(new { status = 0, });
-                            socket.Emit("refresh view", jout);
-                        }
-                        Logger.LogDebugFile("-------------------End login helper-----------------");
                     }
                 });
                 //socket online
-                var socketOnline = IO.Socket(Constant.serverSoketOnline);
-                socketOnline.On(Socket.EVENT_CONNECT, () =>
-                {
-                });
-                socketOnline.On("request app remote login", (data) =>
-                {
-                    string json = data.ToString();
-                    dynamic result = JObject.Parse(json);
-                    string ip = result.ip;
-                    string partner_id = result.partner_id;
-                    string user_name = result.username;
-                    string token =  result.token;
-                    Logger.LogDebugFile("request app remote login Debug: " + ip + "---------------" + GlobalSystem.ipv4);
-                    if (ip == GlobalSystem.ipv4 && partner_id == ClientPartner.partner_id)
-                    {
+                //var socketOnline = IO.Socket(Constant.serverSoketOnline);
+                //socketOnline.On(Socket.EVENT_CONNECT, () =>
+                //{
+                //});
+                //socketOnline.On("request app remote login", (data) =>
+                //{
+                //    string json = data.ToString();
+                //    dynamic result = JObject.Parse(json);
+                //    string ip = result.ip;
+                //    string partner_id = result.partner_id;
+                //    string user_name = result.username;
+                //    string token =  result.token;
+                //    Logger.LogDebugFile("request app remote login Debug: " + ip + "---------------" + GlobalSystem.ipv4);
+                //    if (ip == GlobalSystem.ipv4 && partner_id == ClientPartner.partner_id)
+                //    {
 
-                    }
-                });
+                //    }
+                //});
             }
             catch (Exception e)
             {
@@ -381,12 +380,21 @@ namespace CCMS.view
 
         public void goToHome(String json)
         {
-            this.socket.Disconnect();
-            socket.Close();
-            Home frmHome = new Home(json);
-            this.Hide();
-            frmHome.ShowDialog(this);
-            this.Close();
+            try
+            {
+                if(GlobalSystem.socket != null)
+                {
+                    GlobalSystem.socket.Disconnect();
+                    GlobalSystem.socket.Close();
+                }
+                Home frmHome = new Home(json);
+                this.Hide();
+                frmHome.ShowDialog(this);
+                this.Close();
+            }catch(Exception ex)
+            {
+                Logger.LogThisLine("Slide goToHome: " + ex.ToString());
+            }
         }
 
     }

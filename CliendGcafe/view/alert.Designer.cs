@@ -134,7 +134,6 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "alert";
             this.Text = "alert";
-            this.TopMost = true;
             this.Load += new System.EventHandler(this.alert_Load);
             ((System.ComponentModel.ISupportInitialize)(this.bunifuImageButton1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.icon)).EndInit();

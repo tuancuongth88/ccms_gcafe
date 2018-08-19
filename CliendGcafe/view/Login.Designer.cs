@@ -36,7 +36,13 @@
             this.txtUser = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.pnloading = new System.Windows.Forms.Panel();
+            this.label3 = new System.Windows.Forms.Label();
+            this.loading1 = new CircularProgressBar.CircularProgressBar();
+            this.pnlogin = new System.Windows.Forms.Panel();
             this.groupBox1.SuspendLayout();
+            this.pnloading.SuspendLayout();
+            this.pnlogin.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnlogin
@@ -88,6 +94,52 @@
             resources.ApplyResources(this.label1, "label1");
             this.label1.Name = "label1";
             // 
+            // pnloading
+            // 
+            this.pnloading.Controls.Add(this.label3);
+            this.pnloading.Controls.Add(this.loading1);
+            resources.ApplyResources(this.pnloading, "pnloading");
+            this.pnloading.Name = "pnloading";
+            // 
+            // label3
+            // 
+            resources.ApplyResources(this.label3, "label3");
+            this.label3.ForeColor = System.Drawing.Color.Red;
+            this.label3.Name = "label3";
+            // 
+            // loading1
+            // 
+            this.loading1.AnimationFunction = WinFormAnimation.KnownAnimationFunctions.Liner;
+            this.loading1.AnimationSpeed = 500;
+            this.loading1.BackColor = System.Drawing.Color.Transparent;
+            resources.ApplyResources(this.loading1, "loading1");
+            this.loading1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.loading1.InnerColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.loading1.InnerMargin = 2;
+            this.loading1.InnerWidth = -1;
+            this.loading1.MarqueeAnimationSpeed = 2000;
+            this.loading1.Name = "loading1";
+            this.loading1.OuterColor = System.Drawing.Color.Gray;
+            this.loading1.OuterMargin = -25;
+            this.loading1.OuterWidth = 10;
+            this.loading1.ProgressColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.loading1.ProgressWidth = 25;
+            this.loading1.SecondaryFont = new System.Drawing.Font("Microsoft Sans Serif", 36F);
+            this.loading1.StartAngle = 270;
+            this.loading1.SubscriptColor = System.Drawing.Color.FromArgb(((int)(((byte)(166)))), ((int)(((byte)(166)))), ((int)(((byte)(166)))));
+            this.loading1.SubscriptMargin = new System.Windows.Forms.Padding(10, -35, 0, 0);
+            this.loading1.SubscriptText = "";
+            this.loading1.SuperscriptColor = System.Drawing.Color.FromArgb(((int)(((byte)(166)))), ((int)(((byte)(166)))), ((int)(((byte)(166)))));
+            this.loading1.SuperscriptMargin = new System.Windows.Forms.Padding(10, 35, 0, 0);
+            this.loading1.SuperscriptText = "";
+            this.loading1.TextMargin = new System.Windows.Forms.Padding(8, 8, 0, 0);
+            // 
+            // pnlogin
+            // 
+            this.pnlogin.Controls.Add(this.groupBox1);
+            resources.ApplyResources(this.pnlogin, "pnlogin");
+            this.pnlogin.Name = "pnlogin";
+            // 
             // Login
             // 
             this.AcceptButton = this.btnlogin;
@@ -95,7 +147,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.SeaShell;
             this.CancelButton = this.btnhuy;
-            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.pnlogin);
+            this.Controls.Add(this.pnloading);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "Login";
@@ -103,6 +156,9 @@
             this.Load += new System.EventHandler(this.Login_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.pnloading.ResumeLayout(false);
+            this.pnloading.PerformLayout();
+            this.pnlogin.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -116,5 +172,9 @@
         private System.Windows.Forms.TextBox txtPassword;
         private System.Windows.Forms.Button btnhuy;
         private System.Windows.Forms.Button btnlogin;
+        private System.Windows.Forms.Panel pnloading;
+        private CircularProgressBar.CircularProgressBar loading1;
+        private System.Windows.Forms.Panel pnlogin;
+        private System.Windows.Forms.Label label3;
     }
 }

@@ -19,7 +19,6 @@ namespace CCMS.view
     public partial class Home : Form
     {
 
-        private Socket socket;
         Thread t = null;
         public String jsonLogin;
         List<Process> lstprocess;
@@ -30,7 +29,7 @@ namespace CCMS.view
             this.countLogout = 0;
             InitializeComponent();
             Rectangle workingArea = Screen.GetWorkingArea(this);
-            this.Location = new Point(workingArea.Right - Size.Width, workingArea.Bottom - Size.Height);
+            this.Location = new Point(workingArea.Right - Size.Width, workingArea.Bottom - Size.Height);            
             load();
             Helper.blockWebsite();
         }
@@ -109,7 +108,7 @@ namespace CCMS.view
                 }
                 else
                 {
-                    Logger.LogDebugFile("waitLockOutComboGroup: Call Lại");
+                    Logger.LogDebugFile("waitLockOutComboGroup: Call Lai");
                     waitLockOutComboGroup(GlobalSystem.timeGameUser.time_expired_millisecond);
                 }
             }
@@ -239,9 +238,9 @@ namespace CCMS.view
                     GlobalSystem.time_shutdown = 0;
                     GlobalSystem.is_admin = 0;
                     User.updateStatusLoginAdmin(0);
-                    if (this.socket != null) {
-                        this.socket.Disconnect();
-                        this.socket.Close();
+                    if (GlobalSystem.socket != null) {
+                        GlobalSystem.socket.Disconnect();
+                        GlobalSystem.socket.Close();
                     }
                        
                     if (this.t.IsAlive == true)
@@ -345,8 +344,8 @@ namespace CCMS.view
                     Logger.LogDebugFile("json status : " + data.status);
                     if (data.status == 200)
                     {
-                        this.socket.Disconnect();
-                        this.socket.Close();
+                        GlobalSystem.socket.Disconnect();
+                        GlobalSystem.socket.Close();
                         if (this.t.IsAlive == true)
                             t.Abort();                      
                         GlobalSystem.time_shutdown = data.data.settings.timeLogOut;
@@ -417,13 +416,13 @@ namespace CCMS.view
                 var OPT = new Quobject.SocketIoClientDotNet.Client.IO.Options();
                 OPT.ForceNew = true;
                 OPT.Timeout = 3000;
-                socket = IO.Socket(Constant.serverSoket, OPT);
-                socket.On(Socket.EVENT_CONNECT, ()      =>
+                GlobalSystem.socket = IO.Socket(Constant.serverSoket, OPT);
+                GlobalSystem.socket.On(Socket.EVENT_CONNECT, ()      =>
                 {
                     Logger.LogDebugFile("-------------EVEN SOKET EMIT ADD USER---------------");
                     Logger.LogDebugFile("add user rooms = clients username =" + GlobalSystem.user.username);
                     JObject jout = JObject.FromObject(new { rooms = "clients", username = GlobalSystem.user.username });
-                    socket.Emit("add user", jout);
+                    GlobalSystem.socket.Emit("add user", jout);
                     Logger.LogDebugFile("-------------END SOKET EMIT ADD USER---------------");
                     if (!string.IsNullOrEmpty(jsonLogin))
                     {
@@ -433,13 +432,13 @@ namespace CCMS.view
                             String ip = data.data.listClientInLastLogin[0].ip.ToString();
                             String username = data.data.listClientInLastLogin[0].username.ToString();
                             JObject jout1 = JObject.FromObject(new { ip = ip, type = 1, username = username, message = "Tài khoản này đăng nhập trên máy khác. Máy bạn sẽ bị thoát ra trong vài giây" });
-                            socket.Emit("other helper", jout1);
+                            GlobalSystem.socket.Emit("other helper", jout1);
                         }
                     }
                 });
 
                 // lăng nghe thông báo từ server trả về
-                socket.On("new message", (data)         =>
+                GlobalSystem.socket.On("new message", (data)         =>
                 {
                     string json = data.ToString();
                     dynamic result = JObject.Parse(json);
@@ -462,7 +461,10 @@ namespace CCMS.view
                                 {
                                     this.Invoke(new MethodInvoker(delegate
                                     {
-                                        alert.Show(Helper.StripTagsRegex(message), alert.AlertType.info);
+                                        alert al = new CCMS.view.alert(message, alert.AlertType.info);
+                                        al.TopMost = false;
+                                        al.Show();
+                                        //alert.Show(Helper.StripTagsRegex(message), alert.AlertType.info);
                                     }));
                                     return;
                                 }
@@ -532,18 +534,18 @@ namespace CCMS.view
                     Logger.LogDebugFile("-------------END NEW MESSAGE---------------");
                 });
                 // lắng nghe nạp tiền
-                socket.On("order card success", (data)  =>
+                GlobalSystem.socket.On("order card success", (data)  =>
                 {
                     string json = data.ToString();
                     dynamic result = JObject.Parse(json);
                 });
 
-                socket.On("order success", (data)       =>
+                GlobalSystem.socket.On("order success", (data)       =>
                 {
                     string json = data.ToString();
                     dynamic result = JObject.Parse(json);
                 });
-                socket.On("other helper", (data)        =>
+                GlobalSystem.socket.On("other helper", (data)        =>
                 {
                     Logger.LogDebugFile("-------------START ORTHER HELPER---------------");
                     string json = data.ToString();
@@ -567,7 +569,7 @@ namespace CCMS.view
                                     return;
                                 // after we've done all the processing, 
                                 JObject jout = JObject.FromObject(new { status = 1 });
-                                socket.Emit("refresh view", jout);
+                                GlobalSystem.socket.Emit("refresh view", jout);
 
                                 if (InvokeRequired)
                                 {
@@ -582,8 +584,8 @@ namespace CCMS.view
                                     }));
                                 }
                                 // send lại server thong tin logout thanh cong
-                                this.socket.Disconnect();
-                                this.socket.Close();
+                                GlobalSystem.socket.Disconnect();
+                                GlobalSystem.socket.Close();
                                 logout();
                                 return;
                             }
@@ -595,7 +597,7 @@ namespace CCMS.view
                                     // after we've done all the processing, 
                                     this.Invoke(new MethodInvoker(delegate
                                     {
-                                        this.socket.Close();
+                                        GlobalSystem.socket.Close();
                                         Process.Start("shutdown", "/r /t 10");
                                         Logger.LogThisLine("Tat may tinh trong truong hop restart");
                                         logout();
@@ -610,12 +612,12 @@ namespace CCMS.view
                     }
                     Logger.LogDebugFile("-------------END ORTHER HELPER---------------");
                 });
-                socket.On("minus money", (data)         =>
+                GlobalSystem.socket.On("minus money", (data)         =>
                 {
                     string json = data.ToString();
                     dynamic result = JObject.Parse(json);
                 });
-                socket.On("end task", (data)            =>
+                GlobalSystem.socket.On("end task", (data)            =>
                 {
                     string json = data.ToString();
                     dynamic result = JObject.Parse(json);
@@ -626,7 +628,7 @@ namespace CCMS.view
                         lstprocess[id_process].Kill();
                     }
                 });
-                socket.On("load client task", (data)    =>
+                GlobalSystem.socket.On("load client task", (data)    =>
                 {
                     string ip = data.ToString();
 
@@ -636,25 +638,25 @@ namespace CCMS.view
                     }
                 });
 
-                socket.On("client performance", data =>
+                GlobalSystem.socket.On("client performance", data =>
                 {
                     string ip = data.ToString();
 
                     if (GlobalSystem.ipv4.Equals(ip))
                     {
                         JObject jout = JObject.FromObject(new { cpu = "18%", ram = "25%" });
-                        socket.Emit("client performance", jout);
+                        GlobalSystem.socket.Emit("client performance", jout);
                     }
                 });
 
-                socket.On("load progress task admin", data =>
+                GlobalSystem.socket.On("load progress task admin", data =>
                 {
                     string ip = data.ToString();
 
                     if (GlobalSystem.ipv4.Equals(ip))
                     {
                         JObject jout = JObject.FromObject(new { cpu = "10%", ram = "25%" });
-                        socket.Emit("client performance", jout);
+                        GlobalSystem.socket.Emit("client performance", jout);
                     }
                 });
 
@@ -699,7 +701,7 @@ namespace CCMS.view
                     data = listProcess
                 });
                 string jsonStr = jout.ToString();
-                socket.Emit("load client task", jsonStr);
+                GlobalSystem.socket.Emit("load client task", jsonStr);
             }
             catch(Exception e)
             {

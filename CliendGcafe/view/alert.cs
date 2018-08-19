@@ -9,6 +9,7 @@ namespace CCMS.view
         public alert(string _message, AlertType type)
         {
             InitializeComponent();
+            this.TopMost = false;
             message.Text = _message;
             switch (type)
             {
