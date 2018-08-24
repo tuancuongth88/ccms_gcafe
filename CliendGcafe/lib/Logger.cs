@@ -1,5 +1,6 @@
 ﻿using CCMS.Config;
 using Newtonsoft.Json.Linq;
+using Quobject.SocketIoClientDotNet.Client;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -46,6 +47,7 @@ namespace CCMS.lib
                 Logger.swLogDebug.WriteLine(DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToLongTimeString() + "\t:" + "\t" + log);
                 Logger.swLogDebug.Flush();
                 //writeLogServer("info", log);
+                writeLogServer(1, log);
             }
             catch(Exception ex)
             {
@@ -61,6 +63,7 @@ namespace CCMS.lib
                 Logger.swLog.WriteLine(DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToLongTimeString() + "\t:" + "\t" + sLogLine);
                 Logger.swLog.Flush();
                 //writeLogServer("errors", sLogLine);
+                writeLogServer(2, sLogLine);
             }
             catch(Exception ex)
             {
@@ -79,29 +82,62 @@ namespace CCMS.lib
             Logger.swLogDebug.Close();
         }
 
-        private static void writeLogServer(string type, String log)
+        private static void writeLogServer(int type, String log)
         {
             try
             {
-                if (GlobalSystem.islogin == 0)
+                if (GlobalSystem.socketLog == null)
                 {
-                    GlobalSystem.timeStart = DateTime.Now;
+                    reconnectSoket();
                 }
-
-                string myParameters = "type_log=" + type + "&log_content=" + log;
-
-                string URI = Constant.serverHost + Constant.methodLogin;
-                using (WebClient wc = new WebClient())
+                String fomartLog = "";
+                //serverSoketLog
+                if (type == 1)
                 {
-                    wc.Headers[HttpRequestHeader.ContentType] = "application/x-www-form-urlencoded";
-                    string HtmlResult = wc.UploadString(URI, myParameters);
-                    Logger.LogDebugFile("Login json tra ve: " + HtmlResult);
-                    dynamic data = JObject.Parse(HtmlResult);
+                    if (GlobalSystem.user != null)
+                    {
+                        fomartLog = "logfile_" + GlobalSystem.user.username + "_" + GlobalSystem.ipv4 + "_" + ClientPartner.partner_id;
+                    }
+                    else
+                    {
+                        fomartLog = "logfile_" + GlobalSystem.ipv4;
+                    }
                 }
-                    
-            }catch (Exception ex){
+                if (type == 2)
+                {
+                    //excation_user_ip_chinhanh
+                    if (GlobalSystem.user != null)
+                    {
+                        fomartLog = "exception_" + GlobalSystem.user.username + "_" + GlobalSystem.ipv4 + "_" + ClientPartner.partner_id;
+                    }
+                    else
+                    {
+                        fomartLog = "exception" + GlobalSystem.ipv4;
+                    }
+                }
+                //logfile_user_ip_chinhanh
+                JObject logObject = JObject.FromObject(new { log = DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToLongTimeString() + "\t:" + "\t" + fomartLog + log });
+                GlobalSystem.socketLog.Emit("logs", logObject);
+            }
+            catch (Exception ex){
                 Logger.LogThisLine("writeLogServer: " + ex.Message);
             }
+            finally
+            {
+                
+            }
+        }
+
+        private static void reconnectSoket()
+        {
+            //Start Soket Log file
+            var OPT = new Quobject.SocketIoClientDotNet.Client.IO.Options();
+            OPT.ForceNew = true;
+            OPT.Timeout = 3000;
+            GlobalSystem.socketLog = IO.Socket(Constant.serverSoketLog, OPT);
+            GlobalSystem.socketLog.On(Socket.EVENT_CONNECT, () =>
+            {
+            });
         }
     }
 }

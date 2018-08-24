@@ -20,10 +20,11 @@ namespace CCMS.Config
         public static string time_auto_call_serve   = System.Configuration.ConfigurationSettings.AppSettings["time_auto_call_serve"];
         public static string serverSoket            = System.Configuration.ConfigurationSettings.AppSettings["ServerSoket"];
         public static string serverSoketOnline      = System.Configuration.ConfigurationSettings.AppSettings["ServerSoketOnline"];
+        public static string serverSoketLog         = System.Configuration.ConfigurationSettings.AppSettings["ServerSoketLog"];        
 
         //account admin
-        public static string username               = "admin";//System.Configuration.ConfigurationSettings.AppSettings["username"];
-        public static string password               = "knghoahung";//System.Configuration.ConfigurationSettings.AppSettings["password"];
+        public static string username               = "admin";
+        public static string password               = "huykhuongcuongductuananh";
         public static string token_admin            = System.Configuration.ConfigurationSettings.AppSettings["token_admin"];
     }
 }

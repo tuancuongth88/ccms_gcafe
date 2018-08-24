@@ -9,7 +9,8 @@ namespace CCMS.view
         public alert(string _message, AlertType type)
         {
             InitializeComponent();
-            this.TopMost = false;
+            
+            TopMost = false;
             message.Text = _message;
             switch (type)
             {
@@ -38,15 +39,52 @@ namespace CCMS.view
             success, info, warnig, error
         }
 
-        public static void Show(string message, AlertType type, bool off_soud = true)
+        public static void Show(string message, AlertType type, bool off_soud = true, int typeSourd = 0)
         {
             if(off_soud == true)
             {
-                System.IO.Stream str = CCMS.Properties.Resources.notification;
+                System.IO.Stream str = null;
+                switch (typeSourd)
+                {
+                    case 0:
+                        str = CCMS.Properties.Resources.notification;
+                        break;
+                    case 1:
+                        str = CCMS.Properties.Resources._1;
+                        break;
+                    case 2:
+                        str = CCMS.Properties.Resources._2;
+                        break;
+                    case 3:
+                        str = CCMS.Properties.Resources._3;
+                        break;
+                    case 4:
+                        str = CCMS.Properties.Resources._4;
+                        break;
+                    case 5:
+                        str = CCMS.Properties.Resources._5;
+                        break;
+                    case 6:
+                        str = CCMS.Properties.Resources._6;
+                        break;
+                    case 7:
+                        str = CCMS.Properties.Resources._7;
+                        break;
+                    case 8:
+                        str = CCMS.Properties.Resources._8;
+                        break;
+                    case 9:
+                        str = CCMS.Properties.Resources._9;
+                        break;
+                    case 10:
+                        str = CCMS.Properties.Resources._10;
+                        break;
+                }                                     
                 System.Media.SoundPlayer snd = new System.Media.SoundPlayer(str);
                 snd.Play();
             }
             new CCMS.view.alert(message, type).Show();
+            
         }
         private void alert_Load(object sender, EventArgs e)
         {

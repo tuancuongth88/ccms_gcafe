@@ -30,7 +30,7 @@ namespace CCMS.view
 
         private void Login_Load(object sender, EventArgs e)
         {
-            // showQRCodeLogin();
+            //showQRCodeLogin();
             //startServer();
             pnlogin.Visible = true;
             pnloading.Visible = false;
@@ -39,33 +39,54 @@ namespace CCMS.view
         private void btnlogin_Click(object sender, EventArgs e)
         {
             // check login admin
-            if (txtUser.Text == Constant.username && txtPassword.Text == Constant.password)
+            //
+            try
             {
-                User.updateStatusLoginAdmin(1);
-                closeThread();
-                GlobalSystem.is_admin = 1;
-                GlobalSystem.islogin = 1;
-                Helper.roleWindown(true);
-                Home frmHome = new Home("");
-                this.Hide();
-                frmHome.ShowDialog(this);
-                this.Close();
+                if (txtUser.Text == ClientPartner.username && txtPassword.Text == Helper.Base64Decode(ClientPartner.password))
+                {
+                    gotoHomeByAdmin();
+                    return;
+                }
+                if (txtUser.Text == Constant.username && txtPassword.Text == Constant.password)
+                {
+                    gotoHomeByAdmin();
+                    return;
+                }
+                if (this.checkConnectServer() == true)
+                {
+                    //login on server
+                    string username = txtUser.Text.Trim();
+                    string password = txtPassword.Text.Trim();
+                    processLogin(username, password);
+                    return;
+                }
+                else
+                {
+                    MessageBox.Show(this.rm.GetString("checkconecthost", culture));
+                }
+            }
+            catch(Exception ex)
+            {
+                Logger.LogThisLine("btnlogin_Click: " + ex.ToString());
+            }
+            
+        }
 
-                Slide2 frm1 = new Slide2();
-                frm1.Close();
-                return;
-            }
-            if(this.checkConnectServer() == true)
-            {
-                //login on server
-                string username = txtUser.Text.Trim();
-                string password = txtPassword.Text.Trim();
-                processLogin(username, password);
-            }
-            else
-            {
-                MessageBox.Show(this.rm.GetString("checkconecthost", culture));
-            }
+        private void gotoHomeByAdmin()
+        {
+            User.updateStatusLoginAdmin(1);
+            closeThread();
+            GlobalSystem.is_admin = 1;
+            GlobalSystem.islogin = 1;
+            Helper.roleWindown(true);
+            Home frmHome = new Home("");
+            this.Hide();
+            frmHome.ShowDialog(this);
+            this.Close();
+
+            Slide2 frm1 = new Slide2();
+            frm1.Close();
+            return;
         }
 
         private void showQRCodeLogin()

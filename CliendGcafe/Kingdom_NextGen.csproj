@@ -326,8 +326,9 @@
     <None Include="mp3\notification.wav" />
     <None Include="Resources\change_pas_lock.png" />
     <None Include="Resources\backgrount1.jpg" />
-    <Content Include="images\background.jpg" />
+    <Content Include="images\bg_screen.jpg" />
     <Content Include="logo.ico" />
+    <None Include="Resources\bg_screen.jpg" />
     <Content Include="Resources\Dtafalonso-Android-Lollipop-Play-Games.ico" />
     <Content Include="Resources\background.jpg" />
   </ItemGroup>

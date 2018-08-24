@@ -59,7 +59,8 @@ namespace CCMS.view
                 }
                 else
                 {
-                    pictureBox1.Image = Resources.background1;
+                    String partBg = Application.StartupPath + "/images/bg_screen.jpg";
+                    pictureBox1.Image = Image.FromFile(partBg);
                     if (this.checkConnectServer() == true)
                     {
                         //ket noi den soket server
@@ -251,6 +252,7 @@ namespace CCMS.view
                         }
                     }
                 });
+               
                 //socket online
                 //var socketOnline = IO.Socket(Constant.serverSoketOnline);
                 //socketOnline.On(Socket.EVENT_CONNECT, () =>

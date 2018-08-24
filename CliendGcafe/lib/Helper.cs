@@ -77,6 +77,7 @@ namespace CCMS.lib
             String HtmlResult = "";
             try
             {
+                Logger.LogDebugFile("----------------Start refreshMoney ---------------");
                 if (GlobalSystem.user != null)
                 {
                     string myParameters = "last_time_request=" + GlobalSystem.user.last_time_request;
@@ -137,6 +138,7 @@ namespace CCMS.lib
                         }
                     }
                 }
+                Logger.LogDebugFile("----------------END refreshMoney ---------------");
             }
             catch (Exception e)
             {
@@ -145,13 +147,12 @@ namespace CCMS.lib
                 {
                     return false;
                 }
-                Logger.LogThisLine("refreshMoney: " + GlobalSystem.user.token);
-                Logger.LogThisLine("Token: " + GlobalSystem.user.token);
-                Logger.LogThisLine("Thoi gian gui len server: " + GlobalSystem.user.last_time_request);
-                Logger.LogThisLine("Lỗi Json: "+ HtmlResult);
-                Logger.LogThisLine("refreshMoney "+ e.Message);
-                Logger.LogThisLine("Tạm thời mất kết nối đến Server, nhấn Ok để tiếp tục!");
-                //MessageBox.Show("Tạm thời mất kết nối đến Server, nhấn Ok để tiếp tục!", "Mất kết nối server", MessageBoxButtons.OK);
+                Logger.LogThisLine("Exception refreshMoney: " + GlobalSystem.user.token);
+                Logger.LogThisLine("Exception Token: " + GlobalSystem.user.token);
+                Logger.LogThisLine("Exception Thoi gian gui len server: " + GlobalSystem.user.last_time_request);
+                Logger.LogThisLine("Exception Lỗi Json: " + HtmlResult);
+                Logger.LogThisLine("Exception refreshMoney " + e.Message);
+                Logger.LogThisLine("Exception Tạm thời mất kết nối đến Server, nhấn Ok để tiếp tục!");
                 return true;
 
             }
@@ -313,6 +314,9 @@ namespace CCMS.lib
                     objRegistryKey.SetValue("NoClose", "1", RegistryValueKind.DWord);
                     //objRegistryKeyMachineExplorer.SetValue("NoClose", "1", RegistryValueKind.DWord);
 
+                    //khoa control pannel
+                    objRegistryKeyMachineExplorer.SetValue("NoControlPanel", "1", RegistryValueKind.DWord);
+
                     //to disable log off
                     //objRegistryKey.SetValue("NoLogoff", "1", RegistryValueKind.DWord);
                     //objRegistryKey.SetValue("StartMenuLogOff", "1", RegistryValueKind.DWord);
@@ -352,6 +356,7 @@ namespace CCMS.lib
                     objRegistryKeyMachineWinlogon.SetValue("DisableCAD ", "0", RegistryValueKind.DWord);
                     objRegistryKeyMachineWinlogon.SetValue("DisableCad ", "0", RegistryValueKind.DWord);
                     objRegistryKeyMachineSystem.SetValue("DisableCAD ", "0", RegistryValueKind.DWord);
+                    objRegistryKeyMachineExplorer.SetValue("NoControlPanel", "0", RegistryValueKind.DWord);
                 }
 
                 // update webBrowser use IE 11
@@ -507,6 +512,8 @@ namespace CCMS.lib
                     var result = data.data;
                     ClientPartner.partner_id = data.data.partner_id;
                     ClientPartner.QALink = data.data.qr_code;
+                    ClientPartner.username = data.data.username;
+                    ClientPartner.password = data.data.password;
                     Logger.LogDebugFile("------------- Hoàn thành thông tin chi nhánh------------------");
                 }
             }catch(Exception ex){
@@ -569,6 +576,17 @@ namespace CCMS.lib
             objRegistryKey.Close();
         }
 
-       
+        public static string Base64Encode(string plainText)
+        {
+            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
+            return System.Convert.ToBase64String(plainTextBytes);
+        }
+
+        public static string Base64Decode(string base64EncodedData)
+        {
+            var base64EncodedBytes = System.Convert.FromBase64String(base64EncodedData);
+            return System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
+        }
+
     }
 }

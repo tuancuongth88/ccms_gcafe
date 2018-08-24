@@ -33,7 +33,10 @@ namespace CCMS.Config
 
         public static Socket socket;
 
-        
+        //soket để ghi log
+        public static Socket socketLog;
+
+
 
     }
 }

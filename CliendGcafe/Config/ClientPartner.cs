@@ -11,6 +11,9 @@ namespace CCMS.Config
       
         public static String partner_id;
         public static String QALink;
-        
+
+        public static String username;
+        public static String password;
+
     }
 }

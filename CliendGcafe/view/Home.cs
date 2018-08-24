@@ -70,7 +70,9 @@ namespace CCMS.view
                         alert.Show("Bạn đang sử dụng Combo", alert.AlertType.success);
                     }
                     //start soket lang nghe cac su kien tra ve
+                    Logger.LogDebugFile("----------------Start startServer---------------");
                     startServer();
+                    Logger.LogDebugFile("----------------End startServer---------------");
                     t = new Thread(processTimer);
                     t.Start();
                 }
@@ -184,7 +186,7 @@ namespace CCMS.view
                             if (objTimeGame.iscombo == 1)
                                 alert.Show("Sắp hết thời gian sử dụng Combo!", alert.AlertType.warnig);
                             else
-                                alert.Show("Sắp hết thời gian sử dụng. Vui lòng nạp tiền Để tiếp tục!", alert.AlertType.warnig);
+                                alert.Show("Sắp hết thời gian sử dụng. Vui lòng nạp tiền Để tiếp tục!", alert.AlertType.warnig, true, minutes);
                         }));
                         //return;
                     }
@@ -204,8 +206,18 @@ namespace CCMS.view
         #region sự kiện click vào nút close form
         private void Home_FormClosing(object sender, FormClosingEventArgs e)
         {
-            e.Cancel = true;
-            WindowState = FormWindowState.Minimized;
+            try
+            {
+                if (e.CloseReason == CloseReason.TaskManagerClosing)
+                    e.Cancel = true;
+                e.Cancel = true;
+                WindowState = FormWindowState.Minimized;
+            }
+            catch(Exception ex) {
+                MessageBox.Show("Home_FormClosing: " + ex.ToString());
+                Logger.LogThisLine("Home_FormClosing: " + ex.ToString());
+            }
+            
         }
         #endregion
 
@@ -274,6 +286,8 @@ namespace CCMS.view
             {
                 while (true)
                 {
+                    Logger.LogDebugFile("----------------Start processTimer While---------------");
+
                     await Task.Delay(3 * 60000);
                     if (GlobalSystem.isLogout == 1)
                     {
@@ -304,6 +318,7 @@ namespace CCMS.view
                         await Task.Delay(3000);
                         logout();
                     }
+                    Logger.LogDebugFile("----------------END processTimer While---------------");
                 }
             }
             catch (Exception ex)
@@ -461,10 +476,10 @@ namespace CCMS.view
                                 {
                                     this.Invoke(new MethodInvoker(delegate
                                     {
-                                        alert al = new CCMS.view.alert(message, alert.AlertType.info);
-                                        al.TopMost = false;
-                                        al.Show();
-                                        //alert.Show(Helper.StripTagsRegex(message), alert.AlertType.info);
+                                        //alert al = new CCMS.view.alert(message, alert.AlertType.info);
+                                        //al.TopMost = false;
+                                        //al.Show();
+                                        alert.Show(Helper.StripTagsRegex(message), alert.AlertType.info);
                                     }));
                                     return;
                                 }

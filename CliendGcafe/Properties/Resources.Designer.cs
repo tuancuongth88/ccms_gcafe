@@ -183,6 +183,16 @@ namespace CCMS.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap bg_screen {
+            get {
+                object obj = ResourceManager.GetObject("bg_screen", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap canhbao {
             get {
                 object obj = ResourceManager.GetObject("canhbao", resourceCulture);
