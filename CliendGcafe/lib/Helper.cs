@@ -316,6 +316,7 @@ namespace CCMS.lib
 
                     //khoa control pannel
                     objRegistryKeyMachineExplorer.SetValue("NoControlPanel", "1", RegistryValueKind.DWord);
+                    objRegistryKeyMachineExplorer.SetValue("NoRun", "1", RegistryValueKind.DWord);
 
                     //to disable log off
                     //objRegistryKey.SetValue("NoLogoff", "1", RegistryValueKind.DWord);
@@ -357,6 +358,7 @@ namespace CCMS.lib
                     objRegistryKeyMachineWinlogon.SetValue("DisableCad ", "0", RegistryValueKind.DWord);
                     objRegistryKeyMachineSystem.SetValue("DisableCAD ", "0", RegistryValueKind.DWord);
                     objRegistryKeyMachineExplorer.SetValue("NoControlPanel", "0", RegistryValueKind.DWord);
+                    objRegistryKeyMachineExplorer.SetValue("NoRun", "0", RegistryValueKind.DWord);
                 }
 
                 // update webBrowser use IE 11

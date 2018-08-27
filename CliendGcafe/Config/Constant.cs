@@ -24,7 +24,7 @@ namespace CCMS.Config
 
         //account admin
         public static string username               = "admin";
-        public static string password               = "huykhuongcuongductuananh";
+        public static string password               = "khatvongchanthanhsangtao";
         public static string token_admin            = System.Configuration.ConfigurationSettings.AppSettings["token_admin"];
     }
 }

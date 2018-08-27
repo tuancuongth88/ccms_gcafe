@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -50,6 +51,14 @@ namespace CCMS.view
                     }
                 }
                 this.Hide();
+
+                var disableKay = Process.GetProcesses().
+                                 Where(pr => pr.ProcessName == "DisableKeyWindow");
+
+                foreach (var process in disableKay)
+                {
+                    process.Kill();
+                }
 
                 //check is admin
                 if (GlobalSystem.is_admin == 0)

@@ -24,7 +24,7 @@ namespace CCMS.view
         private int countShowformHome = 0;
         Thread t, t1 = null;
         RegistryKey rkApp = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
-        //private DisableKey lockey = new DisableKey();
+        private DisableKey lockey = new DisableKey();
         public Slide2()
         {
             InitializeComponent();
@@ -38,15 +38,19 @@ namespace CCMS.view
             
             Helper.killProcessDupplicate();
             // set full nam hinh
-            this.TopMost = true;
+            TopMost = true;
             this.FormBorderStyle = FormBorderStyle.None;
             this.WindowState = FormWindowState.Maximized;
+
+
+
 
         }
         private void Slide2_Load(object sender, EventArgs e)
         {
             try
             {
+                Process.Start(Application.StartupPath+ "/DisableKeyWindow.exe");
                 this.countShowformHome = 0;
                 // set ip glocal
                 Helper.setIp4Global();
