@@ -42,9 +42,6 @@ namespace CCMS.view
             this.FormBorderStyle = FormBorderStyle.None;
             this.WindowState = FormWindowState.Maximized;
 
-
-
-
         }
         private void Slide2_Load(object sender, EventArgs e)
         {

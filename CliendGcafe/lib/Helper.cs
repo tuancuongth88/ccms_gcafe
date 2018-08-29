@@ -315,8 +315,15 @@ namespace CCMS.lib
                     //objRegistryKeyMachineExplorer.SetValue("NoClose", "1", RegistryValueKind.DWord);
 
                     //khoa control pannel
-                    objRegistryKeyMachineExplorer.SetValue("NoControlPanel", "1", RegistryValueKind.DWord);
-                    objRegistryKeyMachineExplorer.SetValue("NoRun", "1", RegistryValueKind.DWord);
+                    //objRegistryKeyMachineExplorer.SetValue("NoControlPanel", "1", RegistryValueKind.DWord);
+                    //objRegistryKeyMachineExplorer.SetValue("NoRun", "1", RegistryValueKind.DWord);
+
+                    //khoa 1 so ung dung trong pannel 
+                    objRegistryKey.SetValue("DisallowCpl", "1", RegistryValueKind.DWord);
+                    objRegistryKey.CreateSubKey("DisallowCpl");
+                    RegistryKey objRegistrySubKey = Registry.CurrentUser.CreateSubKey(@"Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\DisallowCpl");
+                    objRegistrySubKey.SetValue("1", "Administrative Tools");
+                    objRegistrySubKey.SetValue("2", "Programs and Features");
 
                     //to disable log off
                     //objRegistryKey.SetValue("NoLogoff", "1", RegistryValueKind.DWord);
@@ -357,8 +364,10 @@ namespace CCMS.lib
                     objRegistryKeyMachineWinlogon.SetValue("DisableCAD ", "0", RegistryValueKind.DWord);
                     objRegistryKeyMachineWinlogon.SetValue("DisableCad ", "0", RegistryValueKind.DWord);
                     objRegistryKeyMachineSystem.SetValue("DisableCAD ", "0", RegistryValueKind.DWord);
-                    objRegistryKeyMachineExplorer.SetValue("NoControlPanel", "0", RegistryValueKind.DWord);
-                    objRegistryKeyMachineExplorer.SetValue("NoRun", "0", RegistryValueKind.DWord);
+
+                    //objRegistryKeyMachineExplorer.SetValue("NoControlPanel", "0", RegistryValueKind.DWord);
+                    //objRegistryKeyMachineExplorer.SetValue("NoRun", "0", RegistryValueKind.DWord);
+                    objRegistryKey.SetValue("DisallowCpl", "0", RegistryValueKind.DWord);
                 }
 
                 // update webBrowser use IE 11
